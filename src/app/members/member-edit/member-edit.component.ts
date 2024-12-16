@@ -20,8 +20,10 @@ import { NgForm } from '@angular/forms';
 })
 export class MemberEditComponent implements OnInit {
   @ViewChild('editForm') editForm: NgForm | undefined;
+
   user: User | undefined;
   member: Member | undefined;
+
   @HostListener('window:beforeunload', ['$event']) unloadNotification(
     $event: any
   ) {
@@ -53,8 +55,15 @@ export class MemberEditComponent implements OnInit {
   }
 
   updateMember() {
-    console.log(this.member);
-    this.toastr.success('Update success.');
-    this.editForm?.reset(this.member);
+    if (this.member != undefined)
+      this.memberServices.editMember(this.member).subscribe(
+        (re) => {
+          this.toastr.success('Update Success. ');
+          this.editForm?.reset(this.member);
+        },
+        (error: any) => {
+          this.toastr.error(error);
+        }
+      );
   }
 }

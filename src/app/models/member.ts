@@ -8,15 +8,15 @@ export interface Member {
   photoUrl: string;
   city: string;
   country: string;
-  created: string;
+  created: Date;
   age: number;
   gender: string;
   lookingFor: string;
   interests: string;
   knownAs: string;
   description: string;
-  lastActive: string;
-  status?: any;
+  lastActive: Date;
+  status: any;
   coin: number;
   price: number;
   photos: Photo[];
