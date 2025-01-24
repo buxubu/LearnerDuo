@@ -1,0 +1,37 @@
+form {
+  flex-direction: row;
+  gap: 10px;
+}
+
+.container {
+  margin-bottom: 20px;
+  display: block;
+  text-align: center;
+}
+
+.form-group {
+  display: inline-block;
+  margin: 0 5px;
+}
+
+.form-group label {
+  margin-right: 5px;
+}
+
+.form-group input {
+  width: 70px;
+  padding: 0 10px;
+  border-radius: 5px;
+}
+
+.form-group select {
+  padding: 0 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+form button {
+  margin: 2px;
+  padding: 5px 10px;
+  margin-top: 0px;
+}

@@ -3,6 +3,7 @@ import { environment } from '../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable, ReplaySubject } from 'rxjs';
 import { User } from '../app/models/user';
+import { Register } from '../app/models/register';
 
 @Injectable({
   providedIn: 'root',
@@ -20,20 +21,18 @@ export class UserService {
       map((reponse: User) => {
         const user = reponse;
         if (user) {
-          localStorage.setItem('user', JSON.stringify(user));
-          this.currentUserSource.next(user);
+          this.setCurrentSource(reponse);
         }
         return reponse;
       })
     );
   }
 
-  register(model: any) {
+  register(model: Register) {
     return this.http.post<User>(this.baseApi + '/user/register', model).pipe(
       map((re: User) => {
         if (re) {
-          localStorage.setItem('user', JSON.stringify(re));
-          this.currentUserSource.next(re);
+          this.setCurrentSource(re);
         }
         return re;
       })
@@ -41,7 +40,8 @@ export class UserService {
   }
 
   // dùng để gán người dùng đăng nhập vào replaySubject
-  getCurrentSource(user: User) {
+  setCurrentSource(user: User) {
+    localStorage.setItem('user', JSON.stringify(user));
     this.currentUserSource.next(user);
   }
 

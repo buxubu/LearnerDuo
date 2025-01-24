@@ -50,6 +50,10 @@ export class MemberEditComponent implements OnInit {
     if (this.user?.userName) {
       this.memberServices.findMember(this.user.userName).subscribe((re) => {
         this.member = re;
+        if (this.member.photoUrl === null) {
+          this.member.photoUrl =
+            'assets/Breezeicons-actions-22-im-user.svg.png';
+        }
       });
     }
   }

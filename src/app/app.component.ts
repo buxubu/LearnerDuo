@@ -19,6 +19,6 @@ export class AppComponent implements OnInit {
   //nếu có rồi sẽ truyền object gồm {user và token} qua services getCurrentSource
   setCurentUser() {
     const user: User = JSON.parse(localStorage.getItem('user') as string);
-    this.userServices.getCurrentSource(user);
+    this.userServices.setCurrentSource(user);
   }
 }

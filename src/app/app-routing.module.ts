@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
+// import { LoginComponent } from './login/login.component';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
-import { ListsComponent } from './lists/lists.component';
+// import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 import { authGuard } from './_modules/guards/auth.guard';
 import { TestErrorComponent } from './errors/test-error/test-error.component';
@@ -26,7 +26,7 @@ const routes: Routes = [
         component: MemberListComponent,
       },
       { path: 'members/:name', component: MemberDetailComponent },
-      { path: 'lists', component: ListsComponent },
+      // { path: 'lists', component: ListsComponent },
       {
         path: 'member/edit',
         component: MemberEditComponent,

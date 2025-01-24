@@ -25,18 +25,18 @@ export class errorInterceptor implements HttpInterceptor {
         if (error) {
           switch (error.status) {
             case 400:
-              if (error.error.errors) {
+              if (error.error) {
                 const modalStateErrors = [];
-                for (const key in error.error.errors) {
-                  if (error.error.errors[key]) {
-                    modalStateErrors.push(error.error.errors[key]);
+                if (error.error.errors) {
+                  for (const key in error.error.errors) {
+                    if (error.error.errors[key]) {
+                      modalStateErrors.push(error.error.errors[key]);
+                    }
                   }
+                } else {
+                  modalStateErrors.push(error.error);
                 }
-                this.toastr.error(
-                  modalStateErrors.join(', '),
-                  'Validation Error'
-                );
-                throw modalStateErrors.flat();
+                throw modalStateErrors.flat().join(', ');
               } else {
                 this.toastr.error('Bad request', error.status);
               }

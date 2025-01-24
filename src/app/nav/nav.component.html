@@ -34,6 +34,7 @@
     <!-- từ đây sau khi login và đã lưu thông tin thì lấy và kiểm tra nếu có giá trị trả về this.loggedIn luôn true
      mà nếu true thì sẽ không hiển thị form đăng nhập -->
     <div class="dropdown" *ngIf="userServices.currentUser$ | async" dropdown>
+      <img src="{{ user?.photoUrl }}" alt="{{ user?.userName }}" />
       <a class="dropdown-toggle" dropdownToggle>Welcome {{ user?.userName }}</a>
       <div class="dropdown-menu" *dropdownMenu>
         <a class="dropdown-item" routerLink="/member/edit">Edit profile</a>
