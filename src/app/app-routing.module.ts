@@ -13,6 +13,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { ServerErrorComponent } from './server-error/server-error.component';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { PreventUnsavedChangesGuard } from './_modules/guards/prevent-unsaved-changes.guard';
+import { ListsComponent } from './lists/lists.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -25,7 +26,7 @@ const routes: Routes = [
         path: 'members',
         component: MemberListComponent,
       },
-      { path: 'members/:name', component: MemberDetailComponent },
+      { path: 'members/:userName', component: MemberDetailComponent },
       // { path: 'lists', component: ListsComponent },
       {
         path: 'member/edit',
@@ -33,6 +34,7 @@ const routes: Routes = [
         canDeactivate: [PreventUnsavedChangesGuard],
       },
       { path: 'messages', component: MessagesComponent },
+      { path: 'lists', component: ListsComponent },
     ],
   },
   { path: 'errors', component: TestErrorComponent },

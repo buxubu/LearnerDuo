@@ -23,21 +23,8 @@ export class MemberListComponent implements OnInit {
     { value: 'female', display: 'Female' },
   ];
 
-  constructor(
-    private memberServices: MemberService,
-    userServices: UserService
-  ) {
-    userServices.currentUser$.pipe(take(1)).subscribe((user) => {
-      if (user) {
-        this.user = user;
-        // in this case we need to get current user to data transmisson from userServices to userParams to check gender
-        // like the code below
-        // constructor(user: User) {
-        //   this.gender = user.gender === 'female' ? 'male' : 'female'; // this code is in UserParams class
-        // }
-        this.userParams = new UserParams(user);
-      }
-    });
+  constructor(private memberServices: MemberService) {
+    this.userParams = this.memberServices.getUserParams();
   }
 
   ngOnInit(): void {
@@ -45,20 +32,21 @@ export class MemberListComponent implements OnInit {
   }
 
   loadMembers() {
+    this.memberServices.setUserParams(this.userParams); // set userParams to remember the last filter
     this.memberServices.getMembers(this.userParams).subscribe((response) => {
       this.members = response.result;
       this.pagination = response.pagination;
-      console.log(this.userParams);
     });
   }
 
   resetFilters() {
-    this.userParams = new UserParams(this.user);
+    this.memberServices.resetUserParams();
     this.loadMembers();
   }
 
   pageChanged(event: any) {
     this.userParams.pageNumber = event.page;
+    this.memberServices.setUserParams(this.userParams); // set userParams to remember the last filter
     this.loadMembers();
   }
 }

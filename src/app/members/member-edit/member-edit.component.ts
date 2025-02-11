@@ -22,7 +22,7 @@ export class MemberEditComponent implements OnInit {
   @ViewChild('editForm') editForm: NgForm | undefined;
 
   user: User | undefined;
-  member: Member | undefined;
+  member: Member = {} as Member;
 
   @HostListener('window:beforeunload', ['$event']) unloadNotification(
     $event: any
