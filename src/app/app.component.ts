@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from './models/user';
 import { UserService } from '../services/user.service';
+import { PresenceService } from '../services/presence.service';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,10 @@ import { UserService } from '../services/user.service';
 export class AppComponent implements OnInit {
   title = 'LearnerDuoApp';
 
-  constructor(private userServices: UserService) {}
+  constructor(
+    private userServices: UserService,
+    private presenceService: PresenceService
+  ) {}
   ngOnInit(): void {
     this.setCurentUser();
   }
@@ -19,6 +23,9 @@ export class AppComponent implements OnInit {
   //nếu có rồi sẽ truyền object gồm {user và token} qua services getCurrentSource
   setCurentUser() {
     const user: User = JSON.parse(localStorage.getItem('user') as string);
-    this.userServices.setCurrentSource(user);
+    if (user) {
+      this.userServices.setCurrentSource(user);
+      this.presenceService.createHubConnection(user); // when we refresh the page, we need to create a new connection
+    }
   }
 }

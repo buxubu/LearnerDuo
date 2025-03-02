@@ -14,7 +14,13 @@
 
   <div class="col-4">
     <div class="card">
-      <img src="{{ member.photoUrl }}" class="card-img-top img-thumbnail" />
+      <img
+        src="{{
+          member.photoUrl ||
+            '/LearnerDuoApp/src/assets/Breezeicons-actions-22-im-user.svg.png'
+        }}"
+        class="card-img-top img-thumbnail"
+      />
       <div class="card-body">
         <div>
           <strong>Location:</strong>

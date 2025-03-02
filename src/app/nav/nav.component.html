@@ -2,6 +2,8 @@
   <div class="container-fluid">
     <a class="navbar-brand" routerLink="/">LearnerDuo</a>
     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <!-- use ng-container Cleaner and less redundant code.
+       Useful for grouping multiple elements without adding extra DOM elements. -->
       <ng-container *ngIf="userServices.currentUser$ | async">
         <li class="nav-item">
           <a
@@ -23,6 +25,12 @@
             >Messages</a
           >
         </li>
+
+        <li *appHasRole="['Admin', 'Moderator']" class="nav-item">
+          <a class="nav-link" routerLink="/admin" routerLinkActive="active"
+            >Admin</a
+          >
+        </li>
       </ng-container>
       <li class="nav-item">
         <a class="nav-link" routerLink="/errors" routerLinkActive="active"
@@ -34,8 +42,14 @@
     <!-- từ đây sau khi login và đã lưu thông tin thì lấy và kiểm tra nếu có giá trị trả về this.loggedIn luôn true
      mà nếu true thì sẽ không hiển thị form đăng nhập -->
     <div class="dropdown" *ngIf="userServices.currentUser$ | async" dropdown>
-      <img src="{{ user?.photoUrl }}" alt="{{ user?.userName }}" />
-      <a class="dropdown-toggle" dropdownToggle>Welcome {{ user?.userName }}</a>
+      <img
+        src="{{
+          user.photoUrl ||
+            '/LearnerDuoApp/src/assets/Breezeicons-actions-22-im-user.svg.png'
+        }}"
+        alt="{{ user.userName }}"
+      />
+      <a class="dropdown-toggle" dropdownToggle>Welcome {{ user.userName }}</a>
       <div class="dropdown-menu" *dropdownMenu>
         <a class="dropdown-item" routerLink="/member/edit">Edit profile</a>
         <li class="divider dropdown-divider"></li>

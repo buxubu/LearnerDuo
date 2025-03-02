@@ -9,6 +9,7 @@ import { ThisReceiver } from '@angular/compiler';
 import { UserParams } from '../app/models/userParams';
 import { UserService } from './user.service';
 import { User } from '../app/models/user';
+import PaginationHelper from './paginationHelper';
 
 @Injectable({
   providedIn: 'root',
@@ -49,13 +50,14 @@ export class MemberService {
   }
 
   getLikes(predicate: string, pageNumber: number, pageSize: number) {
-    let params = this.getPaginationHeaders(pageNumber, pageSize);
+    let params = PaginationHelper.getPaginationHeaders(pageNumber, pageSize);
 
     params = params.append('predicate', predicate);
 
-    return this.getPaginatedResult<Partial<Member[]>>(
+    return PaginationHelper.getPaginatedResult<Partial<Member[]>>(
       this.baseApi + '/likes',
-      params
+      params,
+      this.http
     );
   }
 
@@ -78,7 +80,7 @@ export class MemberService {
       return of(reponse);
     }
 
-    let params = this.getPaginationHeaders(
+    let params = PaginationHelper.getPaginationHeaders(
       userParams.pageNumber,
       userParams.pageSize
     );
@@ -88,9 +90,10 @@ export class MemberService {
     params = params.append('gender', userParams.gender);
     params = params.append('orderBy', userParams.orderBy);
 
-    return this.getPaginatedResult<Member[]>(
+    return PaginationHelper.getPaginatedResult<Member[]>(
       this.baseApi + '/user/getUsers',
-      params
+      params,
+      this.http
     ).pipe(
       map((respon) => {
         this.memberCahe.set(Object.values(userParams).join('-'), respon); // save the response in the cache with Key and Value
@@ -139,42 +142,5 @@ export class MemberService {
     return this.http.delete<NotificationResults>(
       this.baseApi + '/user/deletePhoto/' + photoId
     );
-  }
-
-  // the way to add mutiple objects or classes in the same observable
-  private getPaginatedResult<T>(baseUrl: string, params: HttpParams) {
-    // if you want to create new new PaginatedResult<Member[]>() like this you need to create a class
-    //  including the result and pagination
-    const paginatedResult: PaginatedResult<T> = new PaginatedResult<T>();
-
-    return this.http
-      .get<T>(baseUrl, {
-        // create this oberve and params because we want to get the response headers
-        observe: 'response',
-        params,
-      })
-      .pipe(
-        map((response) => {
-          paginatedResult.result = response.body as T;
-
-          if (response.headers.get('Pagination') !== null) {
-            paginatedResult.pagination = JSON.parse(
-              // the way to get the pagination headers from the response
-              response.headers.get('Pagination') ?? ''
-            );
-          }
-          return paginatedResult;
-        })
-      );
-  }
-
-  private getPaginationHeaders(pageNumber: number, pageSize: number) {
-    // create this params because we want to send the page number and page size to the server
-    let params = new HttpParams();
-
-    params = params.append('pageNumber', pageNumber.toString());
-    params = params.append('pageSize', pageSize.toString());
-
-    return params;
   }
 }

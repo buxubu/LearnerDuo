@@ -19,14 +19,11 @@ export class NavComponent implements OnDestroy, OnInit {
 
   model: any = {};
 
-  user: User | undefined;
+  user: User = {} as User;
 
   ngOnInit(): void {
     this.userServices.currentUser$.pipe(take(1)).subscribe((re) => {
       this.user = re as User;
-      if (this.user.photoUrl === null) {
-        this.user.photoUrl = 'assets/Breezeicons-actions-22-im-user.svg.png';
-      }
     });
   }
 

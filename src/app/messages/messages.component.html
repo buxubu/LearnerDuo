@@ -1,1 +1,115 @@
-<p>messages works!</p>
+<div class="row mb-4" style="width: 25%; margin-top: -50px">
+  <div class="btn-group" name="container">
+    <button
+      class="btn btn-primary"
+      btnRadio="Unread"
+      [(ngModel)]="container"
+      (click)="loadMessages()"
+    >
+      <i class="fa fa-envelope"></i> Unread
+    </button>
+    <button
+      class="btn btn-primary"
+      btnRadio="Inbox"
+      [(ngModel)]="container"
+      (click)="loadMessages()"
+    >
+      <i class="fa fa-envelope-open"></i> Inbox
+    </button>
+    <button
+      class="btn btn-primary"
+      btnRadio="Outbox"
+      [(ngModel)]="container"
+      (click)="loadMessages()"
+    >
+      <i class="fa fa-paper-plane"></i> Outbox
+    </button>
+  </div>
+</div>
+
+<div class="row" *ngIf="messages.length === 0">
+  <h3>No messages</h3>
+</div>
+
+<div class="row" *ngIf="messages.length > 0">
+  <table class="table table-hover" style="cursor: pointer">
+    <tr>
+      <th style="width: 40%">Message</th>
+      <th style="width: 40%">From / To</th>
+      <th style="width: 40%">Sen / Recived</th>
+      <th style="width: 40%"></th>
+    </tr>
+    <tr
+      [hidden]="loading"
+      *ngFor="let message of messages"
+      routerLink="{{
+        container === 'Outbox'
+          ? '/members/' + message.recipientUsername
+          : '/members/' + message.senderUsername
+      }}"
+      [queryParams]="{ tab: 3 }"
+    >
+      <td>{{ message.content }}</td>
+      <td>
+        <div *ngIf="container === 'Outbox'">
+          <img
+            src="{{
+              message.senderPhotoUrl ||
+                '/LearnerDuoApp/src/assets/Breezeicons-actions-22-im-user.svg.png'
+            }}"
+            alt="{{ message.senderUsername }}"
+            style="
+              width: 50px;
+              height: 50px;
+              border-radius: 50%;
+              margin-right: 5px;
+            "
+          />
+          <strong>{{ message.senderUsername | titlecase }}</strong>
+        </div>
+
+        <!-- we use containner !== 'Outbox' becasue Unread and Inbox are the same so use the same code for both -->
+        <div *ngIf="container !== 'Outbox'">
+          <img
+            src="{{
+              message.senderPhotoUrl ||
+                '/LearnerDuoApp/src/assets/Breezeicons-actions-22-im-user.svg.png'
+            }}"
+            alt="{{ message.senderUsername }}"
+            style="
+              width: 50px;
+              height: 50px;
+              border-radius: 50%;
+              margin-right: 5px;
+            "
+          />
+          <strong>{{ message.senderUsername | titlecase }}</strong>
+        </div>
+      </td>
+      <td>{{ message.messageSent | timeago }}</td>
+      <td>
+        <button
+          class="btn btn-danger"
+          (click)="$event.stopPropagation()"
+          (click)="deleteMessage(message.messageId)"
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>
+<div class="d-flex justify-content-center" *ngIf="pagination">
+  <pagination
+    [boundaryLinks]="true"
+    [totalItems]="pagination.totalCount"
+    [itemsPerPage]="pagination.pageSize"
+    [(ngModel)]="pagination.currentPage"
+    (pageChanged)="pageChanged($event)"
+    previousText="&lsaquo;"
+    nextText="&rsaquo;"
+    firstText="&laquo;"
+    lastText="&raquo;"
+  >
+  </pagination>
+</div>

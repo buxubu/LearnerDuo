@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable, ReplaySubject } from 'rxjs';
 import { User } from '../app/models/user';
 import { Register } from '../app/models/register';
+import { PresenceService } from './presence.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,10 @@ export class UserService {
   private currentUserSource = new ReplaySubject<User | null>(1);
   currentUser$ = this.currentUserSource.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private presenceService: PresenceService
+  ) {}
 
   login(model: any) {
     return this.http.post<User>(this.baseApi + '/user/login', model).pipe(
@@ -22,6 +26,7 @@ export class UserService {
         const user = reponse;
         if (user) {
           this.setCurrentSource(reponse);
+          this.presenceService.createHubConnection(user);
         }
         return reponse;
       })
@@ -33,6 +38,7 @@ export class UserService {
       map((re: User) => {
         if (re) {
           this.setCurrentSource(re);
+          this.presenceService.createHubConnection(re);
         }
         return re;
       })
@@ -41,6 +47,9 @@ export class UserService {
 
   // dùng để gán người dùng đăng nhập vào replaySubject
   setCurrentSource(user: User) {
+    user.roles = [];
+    const roles = this.getDecodedToken(user.token).role;
+    Array.isArray(roles) ? (user.roles = roles) : user.roles.push(roles);
     localStorage.setItem('user', JSON.stringify(user));
     this.currentUserSource.next(user);
   }
@@ -48,5 +57,12 @@ export class UserService {
   logout() {
     localStorage.removeItem('user');
     this.currentUserSource.next(null);
+    this.presenceService.stopHubConnection();
+  }
+
+  getDecodedToken(token: string) {
+    // each part in code token have "." so need split('.')
+    // atob is decoded token and split to many part
+    return JSON.parse(atob(token.split('.')[1]));
   }
 }
