@@ -63,5 +63,13 @@ Describe: A basic website that people can use to exchange messages to seek help 
 
 7. Admin page to edit roles users
 
+![image](https://github.com/user-attachments/assets/7863b562-1d26-4980-9971-05bb004d8238)
+
+![image](https://github.com/user-attachments/assets/8ca79067-0de0-407f-a8f5-232bc7383528)
+
+![image](https://github.com/user-attachments/assets/a0b78e86-6c24-426a-96fe-647cac68863d)
+
+
+
 
 
