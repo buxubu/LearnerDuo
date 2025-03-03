@@ -6,6 +6,7 @@ Describe: A basic website that people can use to exchange messages to seek help 
 4. Page management messages to pagination and delete messenge, displayed as Unread, Inbox, Outbox
 5. Edit profile with many feature included: Update information, add photo
 6. Detailed user functions such as displaying real-time online user information, viewing photos, and sending messages
+7. Admin page to edit roles users
 
 # Images
 1. User Authentication: Sign in & Sign up with Json Web Tokens (Login and Register pages)
@@ -59,6 +60,8 @@ Describe: A basic website that people can use to exchange messages to seek help 
 •	Sending messages real-time
 
 ![image](https://github.com/user-attachments/assets/7d6ac40b-ae72-478d-ba47-e1ee04516dd8)
+
+7. Admin page to edit roles users
 
 
 
